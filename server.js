@@ -7,7 +7,7 @@ const path = require("path");
 dotenv.config();
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 /* =================================
    AI CLIENTS
@@ -670,13 +670,15 @@ app.post("/api/image", async (req, res) => {
    START SERVER
 ================================= */
 
-app.listen(
-  PORT,
-  () => {
+module.exports = app;
 
-    console.log(
-      `ARVO AI running at http://localhost:${PORT}`
-    );
-
-  }
-);
+if (require.main === module) {
+  app.listen(
+    process.env.PORT || 3000,
+    () => {
+      console.log(
+        `ARVO AI running at http://localhost:${process.env.PORT || 3000}`
+      );
+    }
+  );
+}
