@@ -1,0 +1,2369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>ARVO AI</title>
+
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+:root{
+  --bg:#050506;
+  --panel:rgba(255,255,255,.055);
+  --panel2:rgba(255,255,255,.085);
+  --border:rgba(255,255,255,.12);
+  --text:#f7f7fa;
+  --muted:#92929d;
+  --purple:#9b6cff;
+  --purple2:#7045d5;
+}
+
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+  background:
+    radial-gradient(circle at 80% 5%,rgba(137,83,255,.18),transparent 28%),
+    radial-gradient(circle at 10% 90%,rgba(112,65,220,.13),transparent 28%),
+    var(--bg);
+  color:var(--text);
+  height:100vh;
+  overflow:hidden;
+}
+
+button,textarea{
+  font-family:inherit;
+}
+
+button{
+  cursor:pointer;
+}
+
+.app{
+  height:100vh;
+  display:flex;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+  width:270px;
+  padding:18px;
+  display:flex;
+  flex-direction:column;
+  border-right:1px solid rgba(255,255,255,.09);
+  background:rgba(255,255,255,.035);
+  backdrop-filter:blur(35px);
+  -webkit-backdrop-filter:blur(35px);
+  z-index:50;
+}
+
+.logo{
+  display:flex;
+  align-items:center;
+  gap:11px;
+  padding:8px 5px 22px;
+}
+
+.logo-icon,
+.welcome-icon{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:800;
+  color:#fff;
+  background:linear-gradient(145deg,#cdb6ff,#6036cf);
+  border:1px solid rgba(255,255,255,.25);
+  box-shadow:0 15px 50px rgba(120,70,255,.25);
+}
+
+.logo-icon{
+  width:38px;
+  height:38px;
+  border-radius:13px;
+}
+
+.logo-name{
+  font-size:19px;
+  font-weight:700;
+}
+
+.new-chat{
+  width:100%;
+  padding:12px 14px;
+  border-radius:14px;
+  border:1px solid var(--border);
+  background:rgba(255,255,255,.055);
+  color:white;
+  text-align:left;
+  transition:.2s;
+}
+
+.new-chat:hover{
+  background:rgba(155,108,255,.14);
+  transform:translateY(-1px);
+}
+
+.new-chat span{
+  color:#c7aaff;
+  font-size:18px;
+  margin-right:7px;
+}
+
+.history-title{
+  margin:27px 7px 10px;
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:1.3px;
+  color:#777783;
+}
+
+.history{
+  flex:1;
+  overflow:auto;
+}
+
+.history-item{
+  padding:10px;
+  margin-bottom:4px;
+  border-radius:11px;
+  color:#aaaab5;
+  font-size:13px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  transition:.2s;
+}
+
+.history-item:hover{
+  background:rgba(255,255,255,.055);
+  color:white;
+}
+
+.sidebar-bottom{
+  border-top:1px solid rgba(255,255,255,.07);
+  padding-top:10px;
+}
+
+.sidebar-btn{
+  width:100%;
+  padding:10px;
+  background:none;
+  border:0;
+  color:#9999a5;
+  text-align:left;
+  border-radius:10px;
+}
+
+.sidebar-btn:hover{
+  background:rgba(255,255,255,.055);
+  color:white;
+}
+
+/* MAIN */
+
+.main{
+  flex:1;
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  position:relative;
+}
+
+/* TOPBAR */
+
+.topbar{
+  height:68px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 25px;
+  border-bottom:1px solid rgba(255,255,255,.075);
+  background:rgba(255,255,255,.025);
+  backdrop-filter:blur(30px);
+  z-index:10;
+}
+
+.mobile-menu{
+  display:none;
+  width:40px;
+  height:40px;
+  border-radius:12px;
+  border:1px solid var(--border);
+  background:rgba(255,255,255,.05);
+  color:white;
+  font-size:20px;
+}
+
+.status{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  color:#aaa;
+  font-size:12px;
+  padding:7px 11px;
+  border-radius:20px;
+  background:rgba(255,255,255,.035);
+  border:1px solid rgba(255,255,255,.07);
+}
+
+.status-dot{
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:#65d991;
+  box-shadow:0 0 12px #65d991;
+}
+
+/* CHAT */
+
+.chat{
+  flex:1;
+  overflow-y:auto;
+  padding:30px 20px 160px;
+}
+
+.chat-inner{
+  max-width:850px;
+  margin:auto;
+}
+
+/* WELCOME */
+
+.welcome{
+  min-height:65vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  animation:fadeIn .45s ease;
+}
+
+@keyframes fadeIn{
+  from{
+    opacity:0;
+    transform:translateY(12px);
+  }
+  to{
+    opacity:1;
+    transform:none;
+  }
+}
+
+.welcome-icon{
+  width:76px;
+  height:76px;
+  border-radius:25px;
+  font-size:29px;
+  margin-bottom:24px;
+}
+
+.welcome h1{
+  font-size:42px;
+  letter-spacing:-1.8px;
+  margin-bottom:10px;
+}
+
+.welcome p{
+  max-width:520px;
+  color:var(--muted);
+  line-height:1.7;
+  font-size:15px;
+}
+
+.quick{
+  width:100%;
+  max-width:620px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-top:30px;
+}
+
+.quick button{
+  padding:13px;
+  border-radius:15px;
+  text-align:left;
+  color:#c9c9d1;
+  border:1px solid var(--border);
+  background:rgba(255,255,255,.045);
+  transition:.2s;
+}
+
+.quick button:hover{
+  color:white;
+  border-color:rgba(155,108,255,.35);
+  background:rgba(155,108,255,.12);
+  transform:translateY(-2px);
+}
+
+/* MESSAGE */
+
+.message{
+  display:flex;
+  margin:19px 0;
+  animation:messageIn .22s ease;
+}
+
+@keyframes messageIn{
+  from{
+    opacity:0;
+    transform:translateY(7px);
+  }
+  to{
+    opacity:1;
+    transform:none;
+  }
+}
+
+.message.user{
+  justify-content:flex-end;
+}
+
+.message.ai{
+  justify-content:flex-start;
+}
+
+.bubble{
+  max-width:min(78%,720px);
+  padding:14px 17px;
+  border-radius:19px;
+  line-height:1.65;
+  font-size:14px;
+  word-wrap:break-word;
+  backdrop-filter:blur(24px);
+  -webkit-backdrop-filter:blur(24px);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.06);
+}
+
+.user .bubble{
+  background:linear-gradient(
+    135deg,
+    rgba(155,108,255,.20),
+    rgba(112,67,210,.10)
+  );
+  border:1px solid rgba(155,108,255,.28);
+  border-bottom-right-radius:6px;
+}
+
+.ai .bubble{
+  background:rgba(255,255,255,.045);
+  border:1px solid rgba(255,255,255,.09);
+  border-bottom-left-radius:6px;
+}
+
+/* MARKDOWN */
+
+.bubble p{
+  margin:5px 0;
+}
+
+.bubble h1,
+.bubble h2,
+.bubble h3{
+  margin:12px 0 8px;
+  line-height:1.3;
+}
+
+.bubble h1{font-size:22px}
+.bubble h2{font-size:19px}
+.bubble h3{font-size:16px}
+
+.bubble ul,
+.bubble ol{
+  padding-left:22px;
+  margin:8px 0;
+}
+
+.bubble li{
+  margin:4px 0;
+}
+
+.bubble strong{
+  color:white;
+}
+
+.bubble code{
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.08);
+  padding:2px 6px;
+  border-radius:6px;
+}
+
+/* CODE */
+
+.code-wrap{
+  margin:12px 0;
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:14px;
+  overflow:hidden;
+  background:rgba(0,0,0,.4);
+}
+
+.code-top{
+  height:36px;
+  padding:0 11px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  color:#888;
+  font-size:11px;
+  border-bottom:1px solid rgba(255,255,255,.07);
+}
+
+.code-copy{
+  padding:5px 8px;
+  border-radius:7px;
+  border:1px solid rgba(255,255,255,.08);
+  background:rgba(255,255,255,.045);
+  color:#999;
+}
+
+.code-wrap pre{
+  margin:0;
+  padding:14px;
+  overflow-x:auto;
+}
+
+.code-wrap pre code{
+  background:none;
+  border:0;
+  padding:0;
+  color:#ddd;
+  font-family:Consolas,monospace;
+  font-size:12px;
+}
+
+/* TABLE */
+
+.md-table{
+  width:100%;
+  border-collapse:collapse;
+  margin:12px 0;
+  font-size:12px;
+}
+
+.md-table th,
+.md-table td{
+  border:1px solid rgba(255,255,255,.09);
+  padding:8px;
+  text-align:left;
+}
+
+.md-table th{
+  background:rgba(155,108,255,.11);
+}
+
+/* IMAGE */
+
+.generated-image{
+  display:block;
+  max-width:100%;
+  border-radius:15px;
+  margin-top:8px;
+  border:1px solid rgba(255,255,255,.12);
+  box-shadow:0 15px 45px rgba(0,0,0,.25);
+}
+
+/* TYPING */
+
+.typing{
+  display:flex;
+  gap:5px;
+  height:20px;
+  align-items:center;
+}
+
+.typing span{
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  background:#aaa;
+  animation:typing 1.2s infinite;
+}
+
+.typing span:nth-child(2){
+  animation-delay:.15s;
+}
+
+.typing span:nth-child(3){
+  animation-delay:.3s;
+}
+
+@keyframes typing{
+  0%,60%,100%{
+    transform:translateY(0);
+    opacity:.4;
+  }
+  30%{
+    transform:translateY(-4px);
+    opacity:1;
+  }
+}
+
+/* ACTIONS */
+
+.message-actions{
+  display:flex;
+  gap:7px;
+  margin-top:8px;
+}
+
+.copy-msg,
+.regenerate-msg,
+.voice-msg{
+  padding:5px 8px;
+  border-radius:7px;
+  border:1px solid rgba(255,255,255,.07);
+  background:rgba(255,255,255,.025);
+  color:#777783;
+  font-size:11px;
+}
+
+.copy-msg:hover,
+.regenerate-msg:hover,
+.voice-msg:hover{
+  color:white;
+  background:rgba(255,255,255,.07);
+}
+
+/* COMPOSER */
+
+.composer-area{
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:0;
+  padding:20px;
+  background:linear-gradient(
+    to top,
+    rgba(5,5,6,1) 18%,
+    rgba(5,5,6,.86) 55%,
+    transparent
+  );
+  z-index:15;
+}
+
+.composer{
+  max-width:850px;
+  margin:auto;
+  padding:8px;
+  display:flex;
+  align-items:flex-end;
+  gap:7px;
+  border-radius:21px;
+  background:rgba(255,255,255,.065);
+  border:1px solid rgba(255,255,255,.15);
+  backdrop-filter:blur(35px);
+  -webkit-backdrop-filter:blur(35px);
+  box-shadow:
+    0 25px 90px rgba(0,0,0,.48),
+    inset 0 1px 0 rgba(255,255,255,.1);
+}
+
+textarea{
+  flex:1;
+  min-height:44px;
+  max-height:180px;
+  resize:none;
+  outline:none;
+  border:0;
+  background:transparent;
+  color:white;
+  font-size:14px;
+  line-height:1.5;
+  padding:12px 8px;
+}
+
+textarea::placeholder{
+  color:#777783;
+}
+
+.icon-btn,
+.send-btn{
+  width:43px;
+  height:43px;
+  flex-shrink:0;
+  border-radius:13px;
+}
+
+.icon-btn{
+  border:1px solid rgba(255,255,255,.09);
+  background:rgba(255,255,255,.045);
+  color:#aaa;
+  font-size:18px;
+}
+
+.icon-btn:hover{
+  color:white;
+  background:rgba(155,108,255,.12);
+}
+
+.send-btn{
+  border:1px solid rgba(255,255,255,.16);
+  background:linear-gradient(145deg,#a477ff,#7044d6);
+  color:white;
+  font-size:17px;
+  box-shadow:0 8px 28px rgba(120,70,230,.27);
+}
+
+.send-btn.stop{
+  background:linear-gradient(145deg,#eee,#85858e);
+  color:#111;
+}
+
+/* UPLOAD */
+
+.upload-preview{
+  max-width:850px;
+  margin:0 auto 8px;
+  display:none;
+  position:relative;
+}
+
+.upload-preview img{
+  width:75px;
+  height:75px;
+  object-fit:cover;
+  border-radius:14px;
+}
+
+.remove-upload{
+  position:absolute;
+  left:58px;
+  top:-7px;
+  width:21px;
+  height:21px;
+  border-radius:50%;
+  border:1px solid rgba(255,255,255,.2);
+  background:#222;
+  color:white;
+}
+
+/* MOBILE */
+
+@media(max-width:750px){
+
+  .sidebar{
+    position:fixed;
+    left:-285px;
+    top:0;
+    bottom:0;
+    transition:.3s;
+  }
+
+  .sidebar.open{
+    left:0;
+  }
+
+  .mobile-menu{
+    display:block;
+  }
+
+  .topbar{
+    padding:0 15px;
+  }
+
+  .welcome{
+    min-height:62vh;
+  }
+
+  .welcome h1{
+    font-size:32px;
+  }
+
+  .welcome p{
+    font-size:13px;
+    padding:0 15px;
+  }
+
+  .quick{
+    grid-template-columns:1fr;
+    padding:0 10px;
+  }
+
+  .bubble{
+    max-width:90%;
+  }
+
+  .chat{
+    padding:25px 12px 150px;
+  }
+
+  .composer-area{
+    padding:12px;
+  }
+
+  .composer{
+    border-radius:18px;
+  }
+
+  .icon-btn,
+  .send-btn{
+    width:40px;
+    height:40px;
+  }
+}
+
+::-webkit-scrollbar{
+  width:7px;
+}
+
+::-webkit-scrollbar-thumb{
+  background:rgba(255,255,255,.1);
+  border-radius:20px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+
+  <div class="logo">
+    <div class="logo-icon">A</div>
+    <div class="logo-name">ARVO AI</div>
+  </div>
+
+  <button class="new-chat" id="newChatBtn">
+    <span>＋</span> New chat
+  </button>
+
+  <div class="history-title">Recent</div>
+
+  <div class="history" id="history"></div>
+
+  <div class="sidebar-bottom">
+    <button class="sidebar-btn" id="clearBtn">
+      🗑 Clear history
+    </button>
+  </div>
+
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+
+<header class="topbar">
+
+  <button class="mobile-menu" id="menuBtn">
+    ☰
+  </button>
+
+  <div></div>
+
+  <div class="status">
+    <span class="status-dot"></span>
+    Online
+  </div>
+
+</header>
+
+<section class="chat" id="chat">
+
+  <div class="chat-inner" id="chatInner">
+
+    <div class="welcome" id="welcome">
+
+      <div class="welcome-icon">A</div>
+
+      <h1>How can I help?</h1>
+
+      <p>
+        Ask ARVO anything — coding, mathematics,
+        ideas, writing, explanations and more.
+      </p>
+
+      <div class="quick">
+
+        <button data-prompt="Explain artificial intelligence simply">
+          Explain AI simply
+        </button>
+
+        <button data-prompt="Help me write a professional website">
+          Build a website
+        </button>
+
+        <button data-prompt="Solve this math problem step by step">
+          Solve mathematics
+        </button>
+
+        <button data-prompt="Give me a creative business idea">
+          Give me an idea
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+<!-- COMPOSER -->
+<div class="composer-area">
+
+  <div class="upload-preview" id="uploadPreview">
+
+    <img id="previewImage">
+
+    <button class="remove-upload" id="removeUpload">
+      ×
+    </button>
+
+  </div>
+
+  <div class="composer">
+
+    <input
+      type="file"
+      id="imageInput"
+      accept="image/*"
+      hidden
+    >
+
+    <button
+      class="icon-btn"
+      id="uploadBtn"
+      title="Upload image"
+    >
+      ＋
+    </button>
+
+    <button
+      class="icon-btn"
+      id="imageBtn"
+      title="Generate image"
+    >
+      ✦
+    </button>
+
+    <textarea
+      id="input"
+      placeholder="Message ARVO AI..."
+      rows="1"
+    ></textarea>
+
+    <button
+      class="send-btn"
+      id="sendBtn"
+    >
+      ↑
+    </button>
+
+  </div>
+
+</div>
+
+</main>
+</div>
+
+<script>
+
+/* =================================
+   ELEMENTS
+================================= */
+
+const input = document.getElementById("input");
+const chat = document.getElementById("chat");
+const chatInner = document.getElementById("chatInner");
+const historyBox = document.getElementById("history");
+
+const sendBtn = document.getElementById("sendBtn");
+const imageInput = document.getElementById("imageInput");
+const uploadBtn = document.getElementById("uploadBtn");
+const imageBtn = document.getElementById("imageBtn");
+
+const uploadPreview =
+  document.getElementById("uploadPreview");
+
+const previewImage =
+  document.getElementById("previewImage");
+
+const removeUpload =
+  document.getElementById("removeUpload");
+
+const newChatBtn =
+  document.getElementById("newChatBtn");
+
+const clearBtn =
+  document.getElementById("clearBtn");
+
+const menuBtn =
+  document.getElementById("menuBtn");
+
+
+/* =================================
+   STATE
+================================= */
+
+let messages = [];
+let historyTitles = [];
+let currentController = null;
+let uploadedImage = null;
+
+
+/* =================================
+   STORAGE
+================================= */
+
+function saveMessages(){
+
+  localStorage.setItem(
+    "arvoMessages",
+    JSON.stringify(messages)
+  );
+
+}
+
+function loadMessages(){
+
+  try{
+
+    const saved =
+      localStorage.getItem("arvoMessages");
+
+    messages =
+      saved ? JSON.parse(saved) : [];
+
+  }catch{
+
+    messages = [];
+
+  }
+
+}
+
+function saveHistory(){
+
+  localStorage.setItem(
+    "arvoHistory",
+    JSON.stringify(historyTitles)
+  );
+
+}
+
+function loadHistory(){
+
+  try{
+
+    const saved =
+      localStorage.getItem("arvoHistory");
+
+    historyTitles =
+      saved ? JSON.parse(saved) : [];
+
+  }catch{
+
+    historyTitles = [];
+
+  }
+
+  renderHistory();
+
+}
+
+
+/* =================================
+   INITIAL LOAD
+================================= */
+
+loadMessages();
+loadHistory();
+
+if(messages.length){
+
+  const welcome =
+    document.getElementById("welcome");
+
+  if(welcome) welcome.remove();
+
+  messages.forEach(msg => {
+
+    addMessage(
+      msg.content,
+      msg.role === "user" ? "user" : "ai",
+      msg.image || null,
+      false,
+      false
+    );
+
+  });
+
+}
+
+
+/* =================================
+   HISTORY
+================================= */
+
+function addHistory(title){
+
+  if(!title) return;
+
+  title =
+    title
+      .replace(/\s+/g," ")
+      .trim();
+
+  if(!title) return;
+
+  historyTitles =
+    historyTitles.filter(x => x !== title);
+
+  historyTitles.push(title);
+
+  historyTitles =
+    historyTitles.slice(-20);
+
+  saveHistory();
+  renderHistory();
+
+}
+
+function renderHistory(){
+
+  historyBox.innerHTML = "";
+
+  [...historyTitles]
+    .reverse()
+    .forEach(title => {
+
+      const item =
+        document.createElement("div");
+
+      item.className =
+        "history-item";
+
+      item.textContent =
+        title;
+
+      item.onclick = () => {
+
+        input.value = title;
+        input.focus();
+
+        document
+          .getElementById("sidebar")
+          .classList.remove("open");
+
+      };
+
+      historyBox.appendChild(item);
+
+    });
+
+}
+
+
+/* =================================
+   NEW CHAT
+================================= */
+
+function newChat(){
+
+  if(currentController){
+
+    currentController.abort();
+    currentController = null;
+
+  }
+
+  messages = [];
+  saveMessages();
+
+  chatInner.innerHTML = "";
+
+  chatInner.appendChild(
+    createWelcome()
+  );
+
+  input.value = "";
+  input.style.height = "auto";
+
+  removeImage();
+
+  resetSendButton();
+
+}
+
+
+/* =================================
+   CLEAR HISTORY
+================================= */
+
+function clearHistory(){
+
+  if(
+    !confirm(
+      "Clear ARVO AI conversation history?"
+    )
+  ) return;
+
+  messages = [];
+  historyTitles = [];
+
+  localStorage.removeItem("arvoMessages");
+  localStorage.removeItem("arvoHistory");
+
+  renderHistory();
+
+  newChat();
+
+}
+
+
+/* =================================
+   WELCOME
+================================= */
+
+function createWelcome(){
+
+  const div =
+    document.createElement("div");
+
+  div.className = "welcome";
+
+  div.id = "welcome";
+
+  div.innerHTML = `
+
+    <div class="welcome-icon">A</div>
+
+    <h1>How can I help?</h1>
+
+    <p>
+      Ask ARVO anything — coding,
+      mathematics, ideas, writing,
+      explanations and more.
+    </p>
+
+    <div class="quick">
+
+      <button data-prompt="Explain artificial intelligence simply">
+        Explain AI simply
+      </button>
+
+      <button data-prompt="Help me write a professional website">
+        Build a website
+      </button>
+
+      <button data-prompt="Solve this math problem step by step">
+        Solve mathematics
+      </button>
+
+      <button data-prompt="Give me a creative business idea">
+        Give me an idea
+      </button>
+
+    </div>
+
+  `;
+
+  div
+    .querySelectorAll("[data-prompt]")
+    .forEach(btn => {
+
+      btn.onclick = () => {
+
+        input.value =
+          btn.dataset.prompt;
+
+        sendMessage();
+
+      };
+
+    });
+
+  return div;
+
+}
+
+
+/* =================================
+   QUICK PROMPTS
+================================= */
+
+document
+  .querySelectorAll("[data-prompt]")
+  .forEach(btn => {
+
+    btn.onclick = () => {
+
+      input.value =
+        btn.dataset.prompt;
+
+      sendMessage();
+
+    };
+
+  });
+
+
+/* =================================
+   INPUT
+================================= */
+
+input.addEventListener(
+  "keydown",
+  e => {
+
+    if(
+      e.key === "Enter" &&
+      !e.shiftKey
+    ){
+
+      e.preventDefault();
+
+      if(currentController){
+
+        stopGeneration();
+
+      }else{
+
+        sendMessage();
+
+      }
+
+    }
+
+  }
+);
+
+
+input.addEventListener(
+  "input",
+  () => {
+
+    input.style.height = "auto";
+
+    input.style.height =
+      Math.min(
+        input.scrollHeight,
+        180
+      ) + "px";
+
+  }
+);
+
+
+/* =================================
+   UPLOAD
+================================= */
+
+uploadBtn.onclick = () => {
+
+  imageInput.click();
+
+};
+
+imageInput.onchange = () => {
+
+  const file =
+    imageInput.files[0];
+
+  if(!file) return;
+
+  const reader =
+    new FileReader();
+
+  reader.onload = e => {
+
+    uploadedImage =
+      e.target.result;
+
+    previewImage.src =
+      uploadedImage;
+
+    uploadPreview.style.display =
+      "block";
+
+  };
+
+  reader.readAsDataURL(file);
+
+};
+
+removeUpload.onclick =
+  removeImage;
+
+function removeImage(){
+
+  uploadedImage = null;
+
+  imageInput.value = "";
+
+  uploadPreview.style.display =
+    "none";
+
+}
+
+
+/* =================================
+   TYPING
+================================= */
+
+function createTyping(){
+
+  const message =
+    document.createElement("div");
+
+  message.className =
+    "message ai";
+
+  message.innerHTML = `
+
+    <div class="bubble">
+
+      <div class="typing">
+
+        <span></span>
+        <span></span>
+        <span></span>
+
+      </div>
+
+    </div>
+
+  `;
+
+  chatInner.appendChild(message);
+
+  scrollChat();
+
+  return message;
+
+}
+
+
+/* =================================
+   SEND
+================================= */
+
+async function sendMessage(){
+
+  if(currentController) return;
+
+  const text =
+    input.value.trim();
+
+  if(
+    !text &&
+    !uploadedImage
+  ) return;
+
+  const welcome =
+    document.getElementById("welcome");
+
+  if(welcome) welcome.remove();
+
+  const image =
+    uploadedImage;
+
+  addMessage(
+    text || "Analyze this image.",
+    "user",
+    image,
+    false,
+    true
+  );
+
+  messages.push({
+
+    role:"user",
+
+    content:
+      text || "Analyze this image.",
+
+    image:image || null
+
+  });
+
+  saveMessages();
+
+  addHistory(
+    text || "Image analysis"
+  );
+
+  input.value = "";
+  input.style.height = "auto";
+
+  removeImage();
+
+  currentController =
+    new AbortController();
+
+  setStopButton();
+
+  const loading =
+    createTyping();
+
+  try{
+
+    const response =
+      await fetch(
+        "/api/chat",
+        {
+          method:"POST",
+
+          headers:{
+            "Content-Type":
+              "application/json"
+          },
+
+          body:JSON.stringify({
+
+            message:
+              text,
+
+            history:
+              getModelHistory()
+
+          }),
+
+          signal:
+            currentController.signal
+
+        }
+      );
+
+    if(!response.ok){
+
+      throw new Error(
+        "Server error"
+      );
+
+    }
+
+    const data =
+      await response.json();
+
+    loading.remove();
+
+    if(data.answer){
+
+      addMessage(
+        data.answer,
+        "ai",
+        null,
+        true,
+        true
+      );
+
+      messages.push({
+
+        role:"assistant",
+
+        content:
+          data.answer
+
+      });
+
+      saveMessages();
+
+    }else{
+
+      addMessage(
+        "Sorry, I couldn't generate a response.",
+        "ai"
+      );
+
+    }
+
+  }catch(error){
+
+    loading.remove();
+
+    if(
+      error.name ===
+      "AbortError"
+    ){
+
+      return;
+
+    }
+
+    console.error(error);
+
+    addMessage(
+      "Connection error. Make sure ARVO AI server is running.",
+      "ai"
+    );
+
+  }finally{
+
+    currentController = null;
+
+    resetSendButton();
+
+  }
+
+}
+
+
+/* =================================
+   MODEL HISTORY
+================================= */
+
+function getModelHistory(){
+
+  return messages
+
+    .filter(
+      msg =>
+        (
+          msg.role === "user" ||
+          msg.role === "assistant"
+        ) &&
+        typeof msg.content === "string"
+    )
+
+    .slice(-20)
+
+    .map(msg => ({
+
+      role:
+        msg.role,
+
+      content:
+        msg.content
+
+    }));
+
+}
+
+
+/* =================================
+   STOP
+================================= */
+
+function stopGeneration(){
+
+  if(!currentController)
+    return;
+
+  currentController.abort();
+
+  currentController = null;
+
+  resetSendButton();
+
+}
+
+function setStopButton(){
+
+  sendBtn.classList.add("stop");
+
+  sendBtn.textContent = "■";
+
+}
+
+function resetSendButton(){
+
+  sendBtn.classList.remove("stop");
+
+  sendBtn.textContent = "↑";
+
+}
+
+
+/* =================================
+   SEND BUTTON
+================================= */
+
+sendBtn.onclick = () => {
+
+  if(currentController){
+
+    stopGeneration();
+
+  }else{
+
+    sendMessage();
+
+  }
+
+};
+
+
+/* =================================
+   ADD MESSAGE
+================================= */
+
+function addMessage(
+  text,
+  type,
+  image = null,
+  actions = false,
+  scroll = true
+){
+
+  const message =
+    document.createElement("div");
+
+  message.className =
+    "message " + type;
+
+  const bubble =
+    document.createElement("div");
+
+  bubble.className =
+    "bubble";
+
+  if(type === "ai"){
+
+    bubble.innerHTML =
+      renderMarkdown(text);
+
+  }else{
+
+    bubble.textContent =
+      text;
+
+  }
+
+  if(image){
+
+    const img =
+      document.createElement("img");
+
+    img.src = image;
+
+    img.className =
+      "generated-image";
+
+    bubble.appendChild(img);
+
+  }
+
+  message.appendChild(bubble);
+
+  if(
+    type === "ai" &&
+    actions
+  ){
+
+    const actionBar =
+      document.createElement("div");
+
+    actionBar.className =
+      "message-actions";
+
+
+    /* COPY */
+
+    const copy =
+      document.createElement("button");
+
+    copy.className =
+      "copy-msg";
+
+    copy.textContent =
+      "Copy";
+
+    copy.onclick = async () => {
+
+      try{
+
+        await navigator.clipboard.writeText(
+          text
+        );
+
+        copy.textContent =
+          "Copied ✓";
+
+        setTimeout(
+          () =>
+            copy.textContent =
+              "Copy",
+          1500
+        );
+
+      }catch{
+
+        copy.textContent =
+          "Copy failed";
+
+      }
+
+    };
+
+
+    /* REGENERATE */
+
+    const regenerate =
+      document.createElement("button");
+
+    regenerate.className =
+      "regenerate-msg";
+
+    regenerate.textContent =
+      "↻ Regenerate";
+
+    regenerate.onclick =
+      () => regenerateResponse(
+        regenerate
+      );
+
+
+    /* VOICE */
+
+    const voice =
+      document.createElement("button");
+
+    voice.className =
+      "voice-msg";
+
+    voice.textContent =
+      "🔊 Voice";
+
+    voice.onclick = () => {
+
+      speakText(text);
+
+    };
+
+
+    actionBar.appendChild(copy);
+    actionBar.appendChild(regenerate);
+    actionBar.appendChild(voice);
+
+    bubble.appendChild(actionBar);
+
+  }
+
+  chatInner.appendChild(message);
+
+  if(scroll)
+    scrollChat();
+
+  return message;
+
+}
+
+
+/* =================================
+   REGENERATE
+================================= */
+
+async function regenerateResponse(button){
+
+  if(currentController)
+    return;
+
+  const userMessages =
+    messages.filter(
+      x => x.role === "user"
+    );
+
+  if(!userMessages.length)
+    return;
+
+  const last =
+    userMessages[
+      userMessages.length - 1
+    ];
+
+  button.textContent =
+    "Generating...";
+
+  currentController =
+    new AbortController();
+
+  setStopButton();
+
+  const loading =
+    createTyping();
+
+  try{
+
+    const response =
+      await fetch(
+        "/api/chat",
+        {
+          method:"POST",
+
+          headers:{
+            "Content-Type":
+              "application/json"
+          },
+
+          body:JSON.stringify({
+
+            message:
+              last.content,
+
+            history:
+              getModelHistory()
+
+          }),
+
+          signal:
+            currentController.signal
+
+        }
+      );
+
+    if(!response.ok)
+      throw new Error();
+
+    const data =
+      await response.json();
+
+    loading.remove();
+
+    if(data.answer){
+
+      addMessage(
+        data.answer,
+        "ai",
+        null,
+        true,
+        true
+      );
+
+      messages.push({
+
+        role:"assistant",
+
+        content:
+          data.answer
+
+      });
+
+      saveMessages();
+
+    }
+
+  }catch(error){
+
+    loading.remove();
+
+    if(
+      error.name !==
+      "AbortError"
+    ){
+
+      addMessage(
+        "Regeneration failed.",
+        "ai"
+      );
+
+    }
+
+  }finally{
+
+    currentController =
+      null;
+
+    resetSendButton();
+
+    button.textContent =
+      "↻ Regenerate";
+
+  }
+
+}
+
+
+/* =================================
+   VOICE
+================================= */
+
+function speakText(text){
+
+  if(!("speechSynthesis" in window))
+    return;
+
+  speechSynthesis.cancel();
+
+  const clean =
+    text
+      .replace(/```[\s\S]*?```/g,"")
+      .replace(/[*#_`]/g,"");
+
+  const speech =
+    new SpeechSynthesisUtterance(
+      clean
+    );
+
+  speech.rate = 1;
+  speech.pitch = 1;
+
+  speechSynthesis.speak(
+    speech
+  );
+
+}
+
+
+/* =================================
+   MARKDOWN
+================================= */
+
+function escapeHTML(text){
+
+  return text
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;");
+
+}
+
+function inlineMarkdown(text){
+
+  text =
+    escapeHTML(text);
+
+  text =
+    text.replace(
+      /\*\*(.*?)\*\*/g,
+      "<strong>$1</strong>"
+    );
+
+  text =
+    text.replace(
+      /\*(.*?)\*/g,
+      "<em>$1</em>"
+    );
+
+  text =
+    text.replace(
+      /`([^`]+)`/g,
+      "<code>$1</code>"
+    );
+
+  return text;
+
+}
+
+function renderMarkdown(text){
+
+  const lines =
+    text.split("\n");
+
+  let html = "";
+
+  let code = false;
+
+  let language = "";
+
+  let codeText = "";
+
+  let list = null;
+
+  function closeList(){
+
+    if(list){
+
+      html +=
+        list === "ol"
+        ? "</ol>"
+        : "</ul>";
+
+      list = null;
+
+    }
+
+  }
+
+  for(
+    let i=0;
+    i<lines.length;
+    i++
+  ){
+
+    const line =
+      lines[i];
+
+
+    /* CODE */
+
+    if(
+      line.trim()
+        .startsWith("```")
+    ){
+
+      if(!code){
+
+        closeList();
+
+        code = true;
+
+        language =
+          line.trim()
+            .replace("```","")
+            .trim() ||
+          "code";
+
+        codeText = "";
+
+      }else{
+
+        code = false;
+
+        html += `
+
+          <div class="code-wrap">
+
+            <div class="code-top">
+
+              <span>
+                ${escapeHTML(language)}
+              </span>
+
+              <button
+                class="code-copy"
+                onclick="copyCode(this)"
+              >
+                Copy
+              </button>
+
+            </div>
+
+            <pre><code>${escapeHTML(
+              codeText
+            )}</code></pre>
+
+          </div>
+
+        `;
+
+      }
+
+      continue;
+
+    }
+
+    if(code){
+
+      codeText +=
+        line + "\n";
+
+      continue;
+
+    }
+
+
+    /* HEADINGS */
+
+    if(line.startsWith("### ")){
+
+      closeList();
+
+      html +=
+        `<h3>${inlineMarkdown(
+          line.slice(4)
+        )}</h3>`;
+
+      continue;
+
+    }
+
+    if(line.startsWith("## ")){
+
+      closeList();
+
+      html +=
+        `<h2>${inlineMarkdown(
+          line.slice(3)
+        )}</h2>`;
+
+      continue;
+
+    }
+
+    if(line.startsWith("# ")){
+
+      closeList();
+
+      html +=
+        `<h1>${inlineMarkdown(
+          line.slice(2)
+        )}</h1>`;
+
+      continue;
+
+    }
+
+
+    /* BULLETS */
+
+    if(/^[-*]\s/.test(line)){
+
+      if(list !== "ul"){
+
+        closeList();
+
+        html += "<ul>";
+
+        list = "ul";
+
+      }
+
+      html +=
+        `<li>${inlineMarkdown(
+          line.replace(
+            /^[-*]\s/,
+            ""
+          )
+        )}</li>`;
+
+      continue;
+
+    }
+
+
+    /* NUMBERED */
+
+    if(/^\d+\.\s/.test(line)){
+
+      if(list !== "ol"){
+
+        closeList();
+
+        html += "<ol>";
+
+        list = "ol";
+
+      }
+
+      html +=
+        `<li>${inlineMarkdown(
+          line.replace(
+            /^\d+\.\s/,
+            ""
+          )
+        )}</li>`;
+
+      continue;
+
+    }
+
+
+    closeList();
+
+
+    /* EMPTY */
+
+    if(!line.trim()){
+
+      continue;
+
+    }
+
+
+    /* PARAGRAPH */
+
+    html +=
+      `<p>${inlineMarkdown(
+        line
+      )}</p>`;
+
+  }
+
+  closeList();
+
+  return html;
+
+}
+
+
+/* =================================
+   COPY CODE
+================================= */
+
+async function copyCode(button){
+
+  const code =
+    button
+      .closest(".code-wrap")
+      .querySelector("code")
+      .textContent;
+
+  try{
+
+    await navigator.clipboard.writeText(
+      code
+    );
+
+    button.textContent =
+      "Copied ✓";
+
+    setTimeout(
+      () =>
+        button.textContent =
+          "Copy",
+      1500
+    );
+
+  }catch{
+
+    button.textContent =
+      "Failed";
+
+  }
+
+}
+
+
+/* =================================
+   IMAGE GENERATION
+================================= */
+
+imageBtn.onclick =
+  generateImage;
+
+async function generateImage(){
+
+  let prompt =
+    input.value.trim();
+
+  if(!prompt){
+
+    prompt =
+      window.prompt(
+        "Describe the image you want ARVO AI to generate:"
+      );
+
+  }
+
+  if(!prompt)
+    return;
+
+  const welcome =
+    document.getElementById("welcome");
+
+  if(welcome)
+    welcome.remove();
+
+  addMessage(
+    "Generate an image: " +
+    prompt,
+    "user"
+  );
+
+  addHistory(
+    "Generate: " + prompt
+  );
+
+  input.value = "";
+
+  const loading =
+    createTyping();
+
+  try{
+
+    const response =
+      await fetch(
+        "/api/image",
+        {
+          method:"POST",
+
+          headers:{
+            "Content-Type":
+              "application/json"
+          },
+
+          body:JSON.stringify({
+            prompt
+          })
+        }
+      );
+
+    const data =
+      await response.json();
+
+    loading.remove();
+
+    if(data.image){
+
+      addMessage(
+        "Here is your generated image:",
+        "ai",
+        data.image,
+        false,
+        true
+      );
+
+    }else{
+
+      addMessage(
+        data.error ||
+        "Image generation failed.",
+        "ai"
+      );
+
+    }
+
+  }catch(error){
+
+    loading.remove();
+
+    addMessage(
+      "Image generation failed. Check the server.",
+      "ai"
+    );
+
+    console.error(error);
+
+  }
+
+}
+
+
+/* =================================
+   SCROLL
+================================= */
+
+function scrollChat(){
+
+  setTimeout(
+    () => {
+
+      chat.scrollTo({
+
+        top:
+          chat.scrollHeight,
+
+        behavior:
+          "smooth"
+
+      });
+
+    },
+    40
+  );
+
+}
+
+
+/* =================================
+   BUTTONS
+================================= */
+
+newChatBtn.onclick =
+  newChat;
+
+clearBtn.onclick =
+  clearHistory;
+
+menuBtn.onclick = () => {
+
+  document
+    .getElementById("sidebar")
+    .classList.toggle("open");
+
+};
+
+</script>
+
+</body>
+</html>
