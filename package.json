@@ -1,0 +1,17 @@
+{
+  "name": "arvo-ai",
+  "version": "1.0.0",
+  "description": "ARVO AI chatbot",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@huggingface/inference": "^4.13.28",
+    "bcryptjs": "^3.0.3",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.3",
+    "openai": "^5.0.0"
+  }
+}
