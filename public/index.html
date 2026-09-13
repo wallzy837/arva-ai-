@@ -13,28 +13,50 @@
 }
 
 :root{
-  --bg:#050506;
+  --bg:#050509;
+  --bg2:#090912;
   --panel:rgba(255,255,255,.055);
   --panel2:rgba(255,255,255,.085);
-  --border:rgba(255,255,255,.12);
+  --border:rgba(255,255,255,.13);
+  --border2:rgba(255,255,255,.20);
   --text:#f7f7fa;
   --muted:#92929d;
   --purple:#9b6cff;
   --purple2:#7045d5;
+  --shadow:rgba(0,0,0,.48);
 }
 
 body{
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
   background:
-    radial-gradient(circle at 80% 5%,rgba(137,83,255,.18),transparent 28%),
-    radial-gradient(circle at 10% 90%,rgba(112,65,220,.13),transparent 28%),
+    radial-gradient(circle at 80% 0%,rgba(137,83,255,.23),transparent 30%),
+    radial-gradient(circle at 10% 90%,rgba(112,65,220,.16),transparent 30%),
+    radial-gradient(circle at 50% 50%,rgba(255,255,255,.025),transparent 50%),
     var(--bg);
   color:var(--text);
   height:100vh;
   overflow:hidden;
+  transition:background .35s ease,color .35s ease;
 }
 
-button,textarea{
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  background:
+    linear-gradient(
+      120deg,
+      rgba(255,255,255,.025),
+      transparent 35%,
+      rgba(155,108,255,.025)
+    );
+  z-index:-1;
+}
+
+button,
+textarea,
+input{
   font-family:inherit;
 }
 
@@ -42,12 +64,18 @@ button{
   cursor:pointer;
 }
 
+/* ================================
+   APP
+================================ */
+
 .app{
   height:100vh;
   display:flex;
 }
 
-/* SIDEBAR */
+/* ================================
+   SIDEBAR
+================================ */
 
 .sidebar{
   width:270px;
@@ -55,9 +83,17 @@ button{
   display:flex;
   flex-direction:column;
   border-right:1px solid rgba(255,255,255,.09);
-  background:rgba(255,255,255,.035);
-  backdrop-filter:blur(35px);
-  -webkit-backdrop-filter:blur(35px);
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.075),
+      rgba(255,255,255,.025)
+    );
+  backdrop-filter:blur(40px) saturate(160%);
+  -webkit-backdrop-filter:blur(40px) saturate(160%);
+  box-shadow:
+    10px 0 50px rgba(0,0,0,.18),
+    inset -1px 0 0 rgba(255,255,255,.035);
   z-index:50;
 }
 
@@ -75,9 +111,17 @@ button{
   justify-content:center;
   font-weight:800;
   color:#fff;
-  background:linear-gradient(145deg,#cdb6ff,#6036cf);
-  border:1px solid rgba(255,255,255,.25);
-  box-shadow:0 15px 50px rgba(120,70,255,.25);
+  background:
+    linear-gradient(
+      145deg,
+      #d6c2ff,
+      #8b5cf6 45%,
+      #4c24b9
+    );
+  border:1px solid rgba(255,255,255,.30);
+  box-shadow:
+    0 15px 50px rgba(120,70,255,.30),
+    inset 0 1px 0 rgba(255,255,255,.45);
 }
 
 .logo-icon{
@@ -89,6 +133,7 @@ button{
 .logo-name{
   font-size:19px;
   font-weight:700;
+  letter-spacing:-.3px;
 }
 
 .new-chat{
@@ -96,14 +141,25 @@ button{
   padding:12px 14px;
   border-radius:14px;
   border:1px solid var(--border);
-  background:rgba(255,255,255,.055);
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.09),
+      rgba(255,255,255,.035)
+    );
   color:white;
   text-align:left;
   transition:.2s;
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.08),
+    0 10px 30px rgba(0,0,0,.12);
 }
 
 .new-chat:hover{
   background:rgba(155,108,255,.14);
+  border-color:rgba(155,108,255,.35);
   transform:translateY(-1px);
 }
 
@@ -163,7 +219,9 @@ button{
   color:white;
 }
 
-/* MAIN */
+/* ================================
+   MAIN
+================================ */
 
 .main{
   flex:1;
@@ -173,7 +231,9 @@ button{
   position:relative;
 }
 
-/* TOPBAR */
+/* ================================
+   TOPBAR
+================================ */
 
 .topbar{
   height:68px;
@@ -182,8 +242,17 @@ button{
   justify-content:space-between;
   padding:0 25px;
   border-bottom:1px solid rgba(255,255,255,.075);
-  background:rgba(255,255,255,.025);
-  backdrop-filter:blur(30px);
+  background:
+    linear-gradient(
+      90deg,
+      rgba(255,255,255,.035),
+      rgba(255,255,255,.018)
+    );
+  backdrop-filter:blur(35px) saturate(160%);
+  -webkit-backdrop-filter:blur(35px) saturate(160%);
+  box-shadow:
+    0 10px 40px rgba(0,0,0,.12),
+    inset 0 -1px 0 rgba(255,255,255,.025);
   z-index:10;
 }
 
@@ -198,6 +267,49 @@ button{
   font-size:20px;
 }
 
+.top-actions{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+/* ================================
+   THEME
+================================ */
+
+.theme-buttons{
+  display:flex;
+  align-items:center;
+  gap:7px;
+}
+
+.theme-btn{
+  width:38px;
+  height:38px;
+  border-radius:12px;
+  border:1px solid rgba(255,255,255,.12);
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.09),
+      rgba(255,255,255,.035)
+    );
+  color:#fff;
+  font-size:16px;
+  transition:.25s;
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.08),
+    0 7px 25px rgba(0,0,0,.10);
+}
+
+.theme-btn:hover{
+  background:rgba(155,108,255,.16);
+  border-color:rgba(155,108,255,.35);
+  transform:translateY(-1px);
+}
+
 .status{
   display:flex;
   align-items:center;
@@ -208,6 +320,7 @@ button{
   border-radius:20px;
   background:rgba(255,255,255,.035);
   border:1px solid rgba(255,255,255,.07);
+  backdrop-filter:blur(18px);
 }
 
 .status-dot{
@@ -218,7 +331,9 @@ button{
   box-shadow:0 0 12px #65d991;
 }
 
-/* CHAT */
+/* ================================
+   CHAT
+================================ */
 
 .chat{
   flex:1;
@@ -231,7 +346,9 @@ button{
   margin:auto;
 }
 
-/* WELCOME */
+/* ================================
+   WELCOME
+================================ */
 
 .welcome{
   min-height:65vh;
@@ -275,33 +392,9 @@ button{
   font-size:15px;
 }
 
-.quick{
-  width:100%;
-  max-width:620px;
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-  margin-top:30px;
-}
-
-.quick button{
-  padding:13px;
-  border-radius:15px;
-  text-align:left;
-  color:#c9c9d1;
-  border:1px solid var(--border);
-  background:rgba(255,255,255,.045);
-  transition:.2s;
-}
-
-.quick button:hover{
-  color:white;
-  border-color:rgba(155,108,255,.35);
-  background:rgba(155,108,255,.12);
-  transform:translateY(-2px);
-}
-
-/* MESSAGE */
+/* ================================
+   MESSAGE
+================================ */
 
 .message{
   display:flex;
@@ -335,28 +428,38 @@ button{
   line-height:1.65;
   font-size:14px;
   word-wrap:break-word;
-  backdrop-filter:blur(24px);
-  -webkit-backdrop-filter:blur(24px);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.06);
+  backdrop-filter:blur(28px) saturate(150%);
+  -webkit-backdrop-filter:blur(28px) saturate(150%);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.07),
+    0 12px 40px rgba(0,0,0,.10);
 }
 
 .user .bubble{
-  background:linear-gradient(
-    135deg,
-    rgba(155,108,255,.20),
-    rgba(112,67,210,.10)
-  );
-  border:1px solid rgba(155,108,255,.28);
+  background:
+    linear-gradient(
+      135deg,
+      rgba(155,108,255,.23),
+      rgba(112,67,210,.11)
+    );
+  border:1px solid rgba(155,108,255,.30);
   border-bottom-right-radius:6px;
 }
 
 .ai .bubble{
-  background:rgba(255,255,255,.045);
-  border:1px solid rgba(255,255,255,.09);
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.065),
+      rgba(255,255,255,.025)
+    );
+  border:1px solid rgba(255,255,255,.10);
   border-bottom-left-radius:6px;
 }
 
-/* MARKDOWN */
+/* ================================
+   MARKDOWN
+================================ */
 
 .bubble p{
   margin:5px 0;
@@ -394,7 +497,9 @@ button{
   border-radius:6px;
 }
 
-/* CODE */
+/* ================================
+   CODE
+================================ */
 
 .code-wrap{
   margin:12px 0;
@@ -438,7 +543,9 @@ button{
   font-size:12px;
 }
 
-/* TABLE */
+/* ================================
+   TABLE
+================================ */
 
 .md-table{
   width:100%;
@@ -458,7 +565,9 @@ button{
   background:rgba(155,108,255,.11);
 }
 
-/* IMAGE */
+/* ================================
+   IMAGE
+================================ */
 
 .generated-image{
   display:block;
@@ -469,7 +578,9 @@ button{
   box-shadow:0 15px 45px rgba(0,0,0,.25);
 }
 
-/* TYPING */
+/* ================================
+   TYPING
+================================ */
 
 .typing{
   display:flex;
@@ -505,7 +616,9 @@ button{
   }
 }
 
-/* ACTIONS */
+/* ================================
+   ACTIONS
+================================ */
 
 .message-actions{
   display:flex;
@@ -531,7 +644,9 @@ button{
   background:rgba(255,255,255,.07);
 }
 
-/* COMPOSER */
+/* ================================
+   COMPOSER
+================================ */
 
 .composer-area{
   position:absolute;
@@ -539,12 +654,13 @@ button{
   right:0;
   bottom:0;
   padding:20px;
-  background:linear-gradient(
-    to top,
-    rgba(5,5,6,1) 18%,
-    rgba(5,5,6,.86) 55%,
-    transparent
-  );
+  background:
+    linear-gradient(
+      to top,
+      rgba(5,5,9,1) 18%,
+      rgba(5,5,9,.88) 55%,
+      transparent
+    );
   z-index:15;
 }
 
@@ -556,13 +672,19 @@ button{
   align-items:flex-end;
   gap:7px;
   border-radius:21px;
-  background:rgba(255,255,255,.065);
-  border:1px solid rgba(255,255,255,.15);
-  backdrop-filter:blur(35px);
-  -webkit-backdrop-filter:blur(35px);
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.095),
+      rgba(255,255,255,.035)
+    );
+  border:1px solid rgba(255,255,255,.17);
+  backdrop-filter:blur(40px) saturate(170%);
+  -webkit-backdrop-filter:blur(40px) saturate(170%);
   box-shadow:
     0 25px 90px rgba(0,0,0,.48),
-    inset 0 1px 0 rgba(255,255,255,.1);
+    inset 0 1px 0 rgba(255,255,255,.12),
+    0 0 0 1px rgba(255,255,255,.025);
 }
 
 textarea{
@@ -596,6 +718,7 @@ textarea::placeholder{
   background:rgba(255,255,255,.045);
   color:#aaa;
   font-size:18px;
+  backdrop-filter:blur(15px);
 }
 
 .icon-btn:hover{
@@ -608,7 +731,9 @@ textarea::placeholder{
   background:linear-gradient(145deg,#a477ff,#7044d6);
   color:white;
   font-size:17px;
-  box-shadow:0 8px 28px rgba(120,70,230,.27);
+  box-shadow:
+    0 8px 28px rgba(120,70,230,.27),
+    inset 0 1px 0 rgba(255,255,255,.25);
 }
 
 .send-btn.stop{
@@ -616,7 +741,9 @@ textarea::placeholder{
   color:#111;
 }
 
-/* UPLOAD */
+/* ================================
+   UPLOAD
+================================ */
 
 .upload-preview{
   max-width:850px;
@@ -630,6 +757,7 @@ textarea::placeholder{
   height:75px;
   object-fit:cover;
   border-radius:14px;
+  border:1px solid rgba(255,255,255,.15);
 }
 
 .remove-upload{
@@ -644,7 +772,428 @@ textarea::placeholder{
   color:white;
 }
 
-/* MOBILE */
+/* ================================
+   AUTH OVERLAY
+================================ */
+
+.auth-overlay{
+  position:fixed;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  background:
+    radial-gradient(
+      circle at 50% 35%,
+      rgba(125,70,255,.22),
+      transparent 38%
+    ),
+    rgba(0,0,0,.62);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  z-index:200;
+}
+
+.auth-card{
+  width:min(430px,100%);
+  padding:30px;
+  border-radius:28px;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.115),
+      rgba(255,255,255,.045)
+    );
+  border:1px solid rgba(255,255,255,.18);
+  box-shadow:
+    0 35px 100px rgba(0,0,0,.55),
+    inset 0 1px 0 rgba(255,255,255,.14);
+  backdrop-filter:blur(45px) saturate(170%);
+  -webkit-backdrop-filter:blur(45px) saturate(170%);
+  animation:authIn .35s ease;
+}
+
+@keyframes authIn{
+  from{
+    opacity:0;
+    transform:translateY(18px) scale(.97);
+  }
+  to{
+    opacity:1;
+    transform:none;
+  }
+}
+
+.auth-logo{
+  width:58px;
+  height:58px;
+  margin:0 auto 18px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:19px;
+  font-size:24px;
+  font-weight:800;
+  color:#fff;
+  background:linear-gradient(145deg,#cdb6ff,#6036cf);
+  border:1px solid rgba(255,255,255,.28);
+  box-shadow:
+    0 15px 45px rgba(120,70,255,.28),
+    inset 0 1px 0 rgba(255,255,255,.4);
+}
+
+.auth-card h2{
+  text-align:center;
+  font-size:25px;
+  margin-bottom:7px;
+  letter-spacing:-.5px;
+}
+
+.auth-subtitle{
+  text-align:center;
+  color:#9999a5;
+  font-size:13px;
+  margin-bottom:23px;
+}
+
+.auth-form{
+  display:flex;
+  flex-direction:column;
+  gap:11px;
+}
+
+.auth-input{
+  width:100%;
+  height:48px;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,.12);
+  outline:none;
+  background:rgba(255,255,255,.055);
+  color:white;
+  padding:0 14px;
+  font-size:14px;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.05);
+}
+
+.auth-input:focus{
+  border-color:rgba(155,108,255,.55);
+  box-shadow:
+    0 0 0 3px rgba(155,108,255,.09),
+    inset 0 1px 0 rgba(255,255,255,.06);
+}
+
+.auth-input::placeholder{
+  color:#777783;
+}
+
+.auth-submit{
+  height:48px;
+  border:1px solid rgba(255,255,255,.18);
+  border-radius:14px;
+  color:white;
+  font-weight:600;
+  background:linear-gradient(145deg,#a477ff,#7044d6);
+  box-shadow:
+    0 12px 30px rgba(120,70,230,.25),
+    inset 0 1px 0 rgba(255,255,255,.25);
+  transition:.2s;
+}
+
+.auth-submit:hover{
+  transform:translateY(-1px);
+  box-shadow:
+    0 16px 38px rgba(120,70,230,.32),
+    inset 0 1px 0 rgba(255,255,255,.25);
+}
+
+.auth-switch{
+  margin-top:17px;
+  text-align:center;
+  color:#9999a5;
+  font-size:13px;
+}
+
+.auth-link{
+  border:0;
+  background:none;
+  color:#b998ff;
+  font-weight:600;
+  margin-left:4px;
+}
+
+.auth-link:hover{
+  text-decoration:underline;
+}
+
+.auth-divider{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin:19px 0;
+  color:#666672;
+  font-size:11px;
+}
+
+.auth-divider::before,
+.auth-divider::after{
+  content:"";
+  height:1px;
+  flex:1;
+  background:rgba(255,255,255,.09);
+}
+
+.guest-btn{
+  width:100%;
+  height:45px;
+  border-radius:13px;
+  border:1px solid rgba(255,255,255,.11);
+  background:rgba(255,255,255,.045);
+  color:#bdbdc7;
+  transition:.2s;
+}
+
+.guest-btn:hover{
+  color:white;
+  background:rgba(255,255,255,.075);
+  border-color:rgba(255,255,255,.19);
+}
+
+.auth-error{
+  min-height:17px;
+  color:#ff8d9d;
+  text-align:center;
+  font-size:12px;
+  margin-top:8px;
+}
+
+/* ================================
+   USER ACCOUNT
+================================ */
+
+.user-account{
+  display:none;
+  align-items:center;
+  gap:7px;
+  padding:6px 10px;
+  border-radius:18px;
+  border:1px solid rgba(255,255,255,.08);
+  background:rgba(255,255,255,.035);
+  color:#aaa;
+  font-size:11px;
+}
+
+.user-account.active{
+  display:flex;
+}
+
+.user-avatar{
+  width:22px;
+  height:22px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:50%;
+  background:linear-gradient(145deg,#a477ff,#7044d6);
+  color:white;
+  font-size:10px;
+  font-weight:700;
+}
+
+/* ================================
+   LIGHT MODE
+================================ */
+
+body.light{
+  --bg:#edf1f7;
+  --bg2:#e7ecf4;
+  --panel:rgba(255,255,255,.42);
+  --panel2:rgba(255,255,255,.58);
+  --border:rgba(255,255,255,.72);
+  --text:#191923;
+  --muted:#686875;
+
+  background:
+    radial-gradient(
+      circle at 80% 5%,
+      rgba(155,108,255,.23),
+      transparent 31%
+    ),
+    radial-gradient(
+      circle at 10% 90%,
+      rgba(112,65,220,.13),
+      transparent 31%
+    ),
+    linear-gradient(
+      135deg,
+      #eef2f7,
+      #e7ecf4
+    );
+
+  color:var(--text);
+}
+
+body.light .sidebar{
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.58),
+      rgba(255,255,255,.31)
+    );
+  border-right:1px solid rgba(255,255,255,.78);
+  box-shadow:8px 0 35px rgba(50,60,90,.07);
+}
+
+body.light .topbar{
+  background:rgba(255,255,255,.38);
+  border-bottom:1px solid rgba(255,255,255,.70);
+}
+
+body.light .new-chat,
+body.light .status,
+body.light .theme-btn,
+body.light .icon-btn,
+body.light .composer,
+body.light .ai .bubble{
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.55),
+      rgba(255,255,255,.32)
+    );
+  border-color:rgba(255,255,255,.78);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.90),
+    0 8px 30px rgba(50,60,90,.07);
+}
+
+body.light .new-chat,
+body.light .theme-btn,
+body.light .icon-btn{
+  color:#353544;
+}
+
+body.light .history-item{
+  color:#686875;
+}
+
+body.light .history-item:hover{
+  background:rgba(255,255,255,.48);
+  color:#22222d;
+}
+
+body.light .sidebar-btn{
+  color:#686875;
+}
+
+body.light .sidebar-btn:hover{
+  background:rgba(255,255,255,.45);
+  color:#22222d;
+}
+
+body.light .welcome p{
+  color:#686875;
+}
+
+body.light textarea{
+  color:#22222d;
+}
+
+body.light textarea::placeholder{
+  color:#858592;
+}
+
+body.light .ai .bubble{
+  color:#292934;
+}
+
+body.light .user .bubble{
+  background:linear-gradient(
+    135deg,
+    rgba(155,108,255,.25),
+    rgba(112,67,210,.14)
+  );
+  border-color:rgba(155,108,255,.30);
+}
+
+body.light .bubble strong{
+  color:#20202b;
+}
+
+body.light .composer-area{
+  background:linear-gradient(
+    to top,
+    rgba(237,241,247,1) 18%,
+    rgba(237,241,247,.82) 55%,
+    transparent
+  );
+}
+
+body.light .status{
+  color:#555562;
+}
+
+body.light .mobile-menu{
+  color:#353544;
+  background:rgba(255,255,255,.42);
+  border-color:rgba(255,255,255,.72);
+}
+
+body.light .auth-overlay{
+  background:
+    radial-gradient(
+      circle at 50% 35%,
+      rgba(125,70,255,.16),
+      transparent 38%
+    ),
+    rgba(225,230,240,.55);
+}
+
+body.light .auth-card{
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.72),
+      rgba(255,255,255,.46)
+    );
+  border-color:rgba(255,255,255,.86);
+  box-shadow:
+    0 35px 90px rgba(50,60,90,.18),
+    inset 0 1px 0 rgba(255,255,255,.95);
+}
+
+body.light .auth-subtitle,
+body.light .auth-switch,
+body.light .auth-divider{
+  color:#686875;
+}
+
+body.light .auth-input{
+  background:rgba(255,255,255,.48);
+  border-color:rgba(255,255,255,.85);
+  color:#22222d;
+}
+
+body.light .auth-input::placeholder{
+  color:#858592;
+}
+
+body.light .guest-btn{
+  color:#555562;
+  background:rgba(255,255,255,.45);
+  border-color:rgba(255,255,255,.78);
+}
+
+body.light .user-account{
+  color:#555562;
+  background:rgba(255,255,255,.40);
+  border-color:rgba(255,255,255,.75);
+}
+
+/* ================================
+   MOBILE
+================================ */
 
 @media(max-width:750px){
 
@@ -681,11 +1230,6 @@ textarea::placeholder{
     padding:0 15px;
   }
 
-  .quick{
-    grid-template-columns:1fr;
-    padding:0 10px;
-  }
-
   .bubble{
     max-width:90%;
   }
@@ -707,6 +1251,29 @@ textarea::placeholder{
     width:40px;
     height:40px;
   }
+
+  .theme-btn{
+    width:35px;
+    height:35px;
+  }
+
+  .status{
+    padding:6px 9px;
+  }
+
+  .status span:last-child{
+    display:none;
+  }
+
+  .user-account{
+    display:none !important;
+  }
+
+  .auth-card{
+    padding:24px 20px;
+    border-radius:23px;
+  }
+
 }
 
 ::-webkit-scrollbar{
@@ -722,148 +1289,326 @@ textarea::placeholder{
 
 <body>
 
+<!-- ================================
+     AUTH
+================================ -->
+
+<div class="auth-overlay" id="authOverlay">
+
+  <div class="auth-card">
+
+    <div class="auth-logo">A</div>
+
+    <h2 id="authTitle">Welcome to ARVO AI</h2>
+
+    <div class="auth-subtitle" id="authSubtitle">
+      Sign in to continue with ARVO AI
+    </div>
+
+    <form class="auth-form" id="authForm">
+
+      <input
+        class="auth-input"
+        id="authName"
+        type="text"
+        placeholder="Your name"
+        autocomplete="name"
+        style="display:none;"
+      >
+
+      <input
+        class="auth-input"
+        id="authEmail"
+        type="email"
+        placeholder="Email address"
+        autocomplete="email"
+        required
+      >
+
+      <input
+        class="auth-input"
+        id="authPassword"
+        type="password"
+        placeholder="Password"
+        autocomplete="current-password"
+        required
+      >
+
+      <button
+        class="auth-submit"
+        id="authSubmit"
+        type="submit"
+      >
+        Login
+      </button>
+
+    </form>
+
+    <div
+      class="auth-error"
+      id="authError"
+    ></div>
+
+    <div class="auth-switch">
+
+      <span id="authSwitchText">
+        Don't have an account?
+      </span>
+
+      <button
+        class="auth-link"
+        id="authSwitchBtn"
+        type="button"
+      >
+        Sign Up
+      </button>
+
+    </div>
+
+    <div class="auth-divider">
+      OR
+    </div>
+
+    <button
+      class="guest-btn"
+      id="guestBtn"
+      type="button"
+    >
+      Continue as Guest
+    </button>
+
+  </div>
+
+</div>
+
+
+<!-- ================================
+     APP
+================================ -->
+
 <div class="app">
 
-<!-- SIDEBAR -->
-<aside class="sidebar" id="sidebar">
+  <!-- SIDEBAR -->
 
-  <div class="logo">
-    <div class="logo-icon">A</div>
-    <div class="logo-name">ARVO AI</div>
-  </div>
+  <aside class="sidebar" id="sidebar">
 
-  <button class="new-chat" id="newChatBtn">
-    <span>＋</span> New chat
-  </button>
+    <div class="logo">
 
-  <div class="history-title">Recent</div>
+      <div class="logo-icon">
+        A
+      </div>
 
-  <div class="history" id="history"></div>
+      <div class="logo-name">
+        ARVO AI
+      </div>
 
-  <div class="sidebar-bottom">
-    <button class="sidebar-btn" id="clearBtn">
-      🗑 Clear history
+    </div>
+
+    <button
+      class="new-chat"
+      id="newChatBtn"
+    >
+      <span>＋</span>
+      New chat
     </button>
-  </div>
 
-</aside>
+    <div class="history-title">
+      Recent
+    </div>
 
-<!-- MAIN -->
-<main class="main">
+    <div
+      class="history"
+      id="history"
+    ></div>
 
-<header class="topbar">
+    <div class="sidebar-bottom">
 
-  <button class="mobile-menu" id="menuBtn">
-    ☰
-  </button>
+      <button
+        class="sidebar-btn"
+        id="clearBtn"
+      >
+        🗑 Clear history
+      </button>
 
-  <div></div>
+    </div>
 
-  <div class="status">
-    <span class="status-dot"></span>
-    Online
-  </div>
+  </aside>
 
-</header>
 
-<section class="chat" id="chat">
+  <!-- MAIN -->
 
-  <div class="chat-inner" id="chatInner">
+  <main class="main">
 
-    <div class="welcome" id="welcome">
+    <header class="topbar">
 
-      <div class="welcome-icon">A</div>
+      <button
+        class="mobile-menu"
+        id="menuBtn"
+      >
+        ☰
+      </button>
 
-      <h1>How can I help?</h1>
+      <div></div>
 
-      <p>
-        Ask ARVO anything — coding, mathematics,
-        ideas, writing, explanations and more.
-      </p>
+      <div class="top-actions">
 
-      <div class="quick">
+        <div
+          class="user-account"
+          id="userAccount"
+        >
+          <span
+            class="user-avatar"
+            id="userAvatar"
+          >
+            U
+          </span>
 
-        <button data-prompt="Explain artificial intelligence simply">
-          Explain AI simply
+          <span id="userNameDisplay">
+            User
+          </span>
+        </div>
+
+        <div class="theme-buttons">
+
+          <button
+            id="darkModeBtn"
+            class="theme-btn"
+            title="Dark Mode"
+          >
+            🌙
+          </button>
+
+          <button
+            id="lightModeBtn"
+            class="theme-btn"
+            title="Light Mode"
+          >
+            ☀️
+          </button>
+
+        </div>
+
+        <div class="status">
+
+          <span class="status-dot"></span>
+
+          <span>
+            Online
+          </span>
+
+        </div>
+
+      </div>
+
+    </header>
+
+
+    <!-- CHAT -->
+
+    <section
+      class="chat"
+      id="chat"
+    >
+
+      <div
+        class="chat-inner"
+        id="chatInner"
+      >
+
+        <div
+          class="welcome"
+          id="welcome"
+        >
+
+          <div class="welcome-icon">
+            A
+          </div>
+
+          <h1>
+            How can I help?
+          </h1>
+
+          <p>
+            Ask ARVO anything — coding, mathematics,
+            ideas, writing, explanations and more.
+          </p>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- COMPOSER -->
+
+    <div class="composer-area">
+
+      <div
+        class="upload-preview"
+        id="uploadPreview"
+      >
+
+        <img
+          id="previewImage"
+        >
+
+        <button
+          class="remove-upload"
+          id="removeUpload"
+        >
+          ×
         </button>
 
-        <button data-prompt="Help me write a professional website">
-          Build a website
+      </div>
+
+
+      <div class="composer">
+
+        <input
+          type="file"
+          id="imageInput"
+          accept="image/*"
+          hidden
+        >
+
+        <button
+          class="icon-btn"
+          id="uploadBtn"
+          title="Upload image"
+        >
+          ＋
         </button>
 
-        <button data-prompt="Solve this math problem step by step">
-          Solve mathematics
+        <button
+          class="icon-btn"
+          id="imageBtn"
+          title="Generate image"
+        >
+          ✦
         </button>
 
-        <button data-prompt="Give me a creative business idea">
-          Give me an idea
+        <textarea
+          id="input"
+          placeholder="Message ARVO AI..."
+          rows="1"
+        ></textarea>
+
+        <button
+          class="send-btn"
+          id="sendBtn"
+        >
+          ↑
         </button>
 
       </div>
 
     </div>
 
-  </div>
-
-</section>
-
-<!-- COMPOSER -->
-<div class="composer-area">
-
-  <div class="upload-preview" id="uploadPreview">
-
-    <img id="previewImage">
-
-    <button class="remove-upload" id="removeUpload">
-      ×
-    </button>
-
-  </div>
-
-  <div class="composer">
-
-    <input
-      type="file"
-      id="imageInput"
-      accept="image/*"
-      hidden
-    >
-
-    <button
-      class="icon-btn"
-      id="uploadBtn"
-      title="Upload image"
-    >
-      ＋
-    </button>
-
-    <button
-      class="icon-btn"
-      id="imageBtn"
-      title="Generate image"
-    >
-      ✦
-    </button>
-
-    <textarea
-      id="input"
-      placeholder="Message ARVO AI..."
-      rows="1"
-    ></textarea>
-
-    <button
-      class="send-btn"
-      id="sendBtn"
-    >
-      ↑
-    </button>
-
-  </div>
+  </main>
 
 </div>
 
-</main>
-</div>
 
 <script>
 
@@ -871,15 +1616,29 @@ textarea::placeholder{
    ELEMENTS
 ================================= */
 
-const input = document.getElementById("input");
-const chat = document.getElementById("chat");
-const chatInner = document.getElementById("chatInner");
-const historyBox = document.getElementById("history");
+const input =
+  document.getElementById("input");
 
-const sendBtn = document.getElementById("sendBtn");
-const imageInput = document.getElementById("imageInput");
-const uploadBtn = document.getElementById("uploadBtn");
-const imageBtn = document.getElementById("imageBtn");
+const chat =
+  document.getElementById("chat");
+
+const chatInner =
+  document.getElementById("chatInner");
+
+const historyBox =
+  document.getElementById("history");
+
+const sendBtn =
+  document.getElementById("sendBtn");
+
+const imageInput =
+  document.getElementById("imageInput");
+
+const uploadBtn =
+  document.getElementById("uploadBtn");
+
+const imageBtn =
+  document.getElementById("imageBtn");
 
 const uploadPreview =
   document.getElementById("uploadPreview");
@@ -899,6 +1658,60 @@ const clearBtn =
 const menuBtn =
   document.getElementById("menuBtn");
 
+const darkModeBtn =
+  document.getElementById("darkModeBtn");
+
+const lightModeBtn =
+  document.getElementById("lightModeBtn");
+
+
+/* AUTH */
+
+const authOverlay =
+  document.getElementById("authOverlay");
+
+const authForm =
+  document.getElementById("authForm");
+
+const authTitle =
+  document.getElementById("authTitle");
+
+const authSubtitle =
+  document.getElementById("authSubtitle");
+
+const authName =
+  document.getElementById("authName");
+
+const authEmail =
+  document.getElementById("authEmail");
+
+const authPassword =
+  document.getElementById("authPassword");
+
+const authSubmit =
+  document.getElementById("authSubmit");
+
+const authError =
+  document.getElementById("authError");
+
+const authSwitchText =
+  document.getElementById("authSwitchText");
+
+const authSwitchBtn =
+  document.getElementById("authSwitchBtn");
+
+const guestBtn =
+  document.getElementById("guestBtn");
+
+const userAccount =
+  document.getElementById("userAccount");
+
+const userAvatar =
+  document.getElementById("userAvatar");
+
+const userNameDisplay =
+  document.getElementById("userNameDisplay");
+
 
 /* =================================
    STATE
@@ -908,6 +1721,432 @@ let messages = [];
 let historyTitles = [];
 let currentController = null;
 let uploadedImage = null;
+
+let authMode = "login";
+
+
+/* =================================
+   AUTH MODE
+================================= */
+
+function showLogin(){
+
+  authMode = "login";
+
+  authTitle.textContent =
+    "Welcome to ARVO AI";
+
+  authSubtitle.textContent =
+    "Sign in to continue with ARVO AI";
+
+  authName.style.display =
+    "none";
+
+  authName.required =
+    false;
+
+  authEmail.placeholder =
+    "Email address";
+
+  authPassword.placeholder =
+    "Password";
+
+  authSubmit.textContent =
+    "Login";
+
+  authSwitchText.textContent =
+    "Don't have an account?";
+
+  authSwitchBtn.textContent =
+    "Sign Up";
+
+  authError.textContent =
+    "";
+
+}
+
+function showSignup(){
+
+  authMode = "signup";
+
+  authTitle.textContent =
+    "Create your ARVO account";
+
+  authSubtitle.textContent =
+    "Create an account and start using ARVO AI";
+
+  authName.style.display =
+    "block";
+
+  authName.required =
+    true;
+
+  authEmail.placeholder =
+    "Email address";
+
+  authPassword.placeholder =
+    "Create password";
+
+  authSubmit.textContent =
+    "Create Account";
+
+  authSwitchText.textContent =
+    "Already have an account?";
+
+  authSwitchBtn.textContent =
+    "Login";
+
+  authError.textContent =
+    "";
+
+}
+
+authSwitchBtn.onclick = () => {
+
+  if(authMode === "login"){
+
+    showSignup();
+
+  }else{
+
+    showLogin();
+
+  }
+
+};
+
+
+function setLoggedIn(user){
+
+  authOverlay.style.display =
+    "none";
+
+  if(!user)
+    return;
+
+  userAccount.classList.add(
+    "active"
+  );
+
+  const name =
+    user.name ||
+    user.email ||
+    "User";
+
+  userNameDisplay.textContent =
+    name;
+
+  userAvatar.textContent =
+    name
+      .charAt(0)
+      .toUpperCase();
+
+}
+
+
+function setGuest(){
+
+  authOverlay.style.display =
+    "none";
+
+  userAccount.classList.remove(
+    "active"
+  );
+
+}
+
+
+function getToken(){
+
+  return localStorage.getItem(
+    "arvoToken"
+  );
+
+}
+
+
+function getSavedUser(){
+
+  try{
+
+    return JSON.parse(
+      localStorage.getItem(
+        "arvoUser"
+      )
+    );
+
+  }catch{
+
+    return null;
+
+  }
+
+}
+
+
+function saveAuth(token,user){
+
+  if(token){
+
+    localStorage.setItem(
+      "arvoToken",
+      token
+    );
+
+  }
+
+  if(user){
+
+    localStorage.setItem(
+      "arvoUser",
+      JSON.stringify(user)
+    );
+
+  }
+
+}
+
+
+function clearAuth(){
+
+  localStorage.removeItem(
+    "arvoToken"
+  );
+
+  localStorage.removeItem(
+    "arvoUser"
+  );
+
+}
+
+
+async function checkExistingLogin(){
+
+  const token =
+    getToken();
+
+  const savedUser =
+    getSavedUser();
+
+  if(token && savedUser){
+
+    setLoggedIn(savedUser);
+
+  }else{
+
+    showLogin();
+
+  }
+
+}
+
+
+authForm.addEventListener(
+  "submit",
+  async e => {
+
+    e.preventDefault();
+
+    authError.textContent =
+      "";
+
+    const email =
+      authEmail.value.trim();
+
+    const password =
+      authPassword.value;
+
+    const name =
+      authName.value.trim();
+
+    if(!email || !password){
+
+      authError.textContent =
+        "Please enter your email and password.";
+
+      return;
+
+    }
+
+    if(
+      authMode === "signup" &&
+      !name
+    ){
+
+      authError.textContent =
+        "Please enter your name.";
+
+      return;
+
+    }
+
+    authSubmit.disabled =
+      true;
+
+    authSubmit.textContent =
+      authMode === "login"
+      ? "Logging in..."
+      : "Creating account...";
+
+    try{
+
+      const endpoint =
+        authMode === "login"
+        ? "/api/login"
+        : "/api/signup";
+
+      const body =
+        authMode === "login"
+        ? {
+            email,
+            password
+          }
+        : {
+            name,
+            email,
+            password
+          };
+
+      const response =
+        await fetch(
+          endpoint,
+          {
+
+            method:"POST",
+
+            headers:{
+              "Content-Type":
+                "application/json"
+            },
+
+            body:
+              JSON.stringify(body)
+
+          }
+        );
+
+      let data = {};
+
+      try{
+
+        data =
+          await response.json();
+
+      }catch{
+
+        data = {};
+
+      }
+
+      if(!response.ok){
+
+        throw new Error(
+          data.error ||
+          "Authentication failed."
+        );
+
+      }
+
+      if(!data.token){
+
+        throw new Error(
+          "Login server did not return a token."
+        );
+
+      }
+
+      saveAuth(
+        data.token,
+        data.user
+      );
+
+      setLoggedIn(
+        data.user
+      );
+
+    }catch(error){
+
+      console.error(error);
+
+      authError.textContent =
+        error.message ||
+        "Something went wrong.";
+
+    }finally{
+
+      authSubmit.disabled =
+        false;
+
+      authSubmit.textContent =
+        authMode === "login"
+        ? "Login"
+        : "Create Account";
+
+    }
+
+  }
+);
+
+
+guestBtn.onclick = () => {
+
+  clearAuth();
+
+  setGuest();
+
+};
+
+
+/* =================================
+   DARK / LIGHT MODE
+================================= */
+
+function setTheme(theme){
+
+  if(theme === "light"){
+
+    document.body.classList.add(
+      "light"
+    );
+
+    localStorage.setItem(
+      "arvoTheme",
+      "light"
+    );
+
+  }else{
+
+    document.body.classList.remove(
+      "light"
+    );
+
+    localStorage.setItem(
+      "arvoTheme",
+      "dark"
+    );
+
+  }
+
+}
+
+const savedTheme =
+  localStorage.getItem(
+    "arvoTheme"
+  ) || "dark";
+
+setTheme(savedTheme);
+
+darkModeBtn.onclick = () => {
+
+  setTheme("dark");
+
+};
+
+lightModeBtn.onclick = () => {
+
+  setTheme("light");
+
+};
 
 
 /* =================================
@@ -928,10 +2167,14 @@ function loadMessages(){
   try{
 
     const saved =
-      localStorage.getItem("arvoMessages");
+      localStorage.getItem(
+        "arvoMessages"
+      );
 
     messages =
-      saved ? JSON.parse(saved) : [];
+      saved
+      ? JSON.parse(saved)
+      : [];
 
   }catch{
 
@@ -955,10 +2198,14 @@ function loadHistory(){
   try{
 
     const saved =
-      localStorage.getItem("arvoHistory");
+      localStorage.getItem(
+        "arvoHistory"
+      );
 
     historyTitles =
-      saved ? JSON.parse(saved) : [];
+      saved
+      ? JSON.parse(saved)
+      : [];
 
   }catch{
 
@@ -981,15 +2228,20 @@ loadHistory();
 if(messages.length){
 
   const welcome =
-    document.getElementById("welcome");
+    document.getElementById(
+      "welcome"
+    );
 
-  if(welcome) welcome.remove();
+  if(welcome)
+    welcome.remove();
 
   messages.forEach(msg => {
 
     addMessage(
       msg.content,
-      msg.role === "user" ? "user" : "ai",
+      msg.role === "user"
+        ? "user"
+        : "ai",
       msg.image || null,
       false,
       false
@@ -1006,17 +2258,21 @@ if(messages.length){
 
 function addHistory(title){
 
-  if(!title) return;
+  if(!title)
+    return;
 
   title =
     title
       .replace(/\s+/g," ")
       .trim();
 
-  if(!title) return;
+  if(!title)
+    return;
 
   historyTitles =
-    historyTitles.filter(x => x !== title);
+    historyTitles.filter(
+      x => x !== title
+    );
 
   historyTitles.push(title);
 
@@ -1028,16 +2284,20 @@ function addHistory(title){
 
 }
 
+
 function renderHistory(){
 
-  historyBox.innerHTML = "";
+  historyBox.innerHTML =
+    "";
 
   [...historyTitles]
     .reverse()
     .forEach(title => {
 
       const item =
-        document.createElement("div");
+        document.createElement(
+          "div"
+        );
 
       item.className =
         "history-item";
@@ -1047,16 +2307,24 @@ function renderHistory(){
 
       item.onclick = () => {
 
-        input.value = title;
+        input.value =
+          title;
+
         input.focus();
 
         document
-          .getElementById("sidebar")
-          .classList.remove("open");
+          .getElementById(
+            "sidebar"
+          )
+          .classList.remove(
+            "open"
+          );
 
       };
 
-      historyBox.appendChild(item);
+      historyBox.appendChild(
+        item
+      );
 
     });
 
@@ -1072,25 +2340,72 @@ function newChat(){
   if(currentController){
 
     currentController.abort();
-    currentController = null;
+
+    currentController =
+      null;
 
   }
 
   messages = [];
+
   saveMessages();
 
-  chatInner.innerHTML = "";
+  chatInner.innerHTML =
+    "";
 
   chatInner.appendChild(
     createWelcome()
   );
 
-  input.value = "";
-  input.style.height = "auto";
+  input.value =
+    "";
+
+  input.style.height =
+    "auto";
 
   removeImage();
 
   resetSendButton();
+
+}
+
+
+/* =================================
+   WELCOME
+================================= */
+
+function createWelcome(){
+
+  const div =
+    document.createElement(
+      "div"
+    );
+
+  div.className =
+    "welcome";
+
+  div.id =
+    "welcome";
+
+  div.innerHTML = `
+
+    <div class="welcome-icon">
+      A
+    </div>
+
+    <h1>
+      How can I help?
+    </h1>
+
+    <p>
+      Ask ARVO anything — coding,
+      mathematics, ideas, writing,
+      explanations and more.
+    </p>
+
+  `;
+
+  return div;
 
 }
 
@@ -1105,106 +2420,25 @@ function clearHistory(){
     !confirm(
       "Clear ARVO AI conversation history?"
     )
-  ) return;
+  )
+    return;
 
   messages = [];
   historyTitles = [];
 
-  localStorage.removeItem("arvoMessages");
-  localStorage.removeItem("arvoHistory");
+  localStorage.removeItem(
+    "arvoMessages"
+  );
+
+  localStorage.removeItem(
+    "arvoHistory"
+  );
 
   renderHistory();
 
   newChat();
 
 }
-
-
-/* =================================
-   WELCOME
-================================= */
-
-function createWelcome(){
-
-  const div =
-    document.createElement("div");
-
-  div.className = "welcome";
-
-  div.id = "welcome";
-
-  div.innerHTML = `
-
-    <div class="welcome-icon">A</div>
-
-    <h1>How can I help?</h1>
-
-    <p>
-      Ask ARVO anything — coding,
-      mathematics, ideas, writing,
-      explanations and more.
-    </p>
-
-    <div class="quick">
-
-      <button data-prompt="Explain artificial intelligence simply">
-        Explain AI simply
-      </button>
-
-      <button data-prompt="Help me write a professional website">
-        Build a website
-      </button>
-
-      <button data-prompt="Solve this math problem step by step">
-        Solve mathematics
-      </button>
-
-      <button data-prompt="Give me a creative business idea">
-        Give me an idea
-      </button>
-
-    </div>
-
-  `;
-
-  div
-    .querySelectorAll("[data-prompt]")
-    .forEach(btn => {
-
-      btn.onclick = () => {
-
-        input.value =
-          btn.dataset.prompt;
-
-        sendMessage();
-
-      };
-
-    });
-
-  return div;
-
-}
-
-
-/* =================================
-   QUICK PROMPTS
-================================= */
-
-document
-  .querySelectorAll("[data-prompt]")
-  .forEach(btn => {
-
-    btn.onclick = () => {
-
-      input.value =
-        btn.dataset.prompt;
-
-      sendMessage();
-
-    };
-
-  });
 
 
 /* =================================
@@ -1242,7 +2476,8 @@ input.addEventListener(
   "input",
   () => {
 
-    input.style.height = "auto";
+    input.style.height =
+      "auto";
 
     input.style.height =
       Math.min(
@@ -1264,12 +2499,14 @@ uploadBtn.onclick = () => {
 
 };
 
+
 imageInput.onchange = () => {
 
   const file =
     imageInput.files[0];
 
-  if(!file) return;
+  if(!file)
+    return;
 
   const reader =
     new FileReader();
@@ -1291,14 +2528,18 @@ imageInput.onchange = () => {
 
 };
 
+
 removeUpload.onclick =
   removeImage;
 
+
 function removeImage(){
 
-  uploadedImage = null;
+  uploadedImage =
+    null;
 
-  imageInput.value = "";
+  imageInput.value =
+    "";
 
   uploadPreview.style.display =
     "none";
@@ -1313,7 +2554,9 @@ function removeImage(){
 function createTyping(){
 
   const message =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
 
   message.className =
     "message ai";
@@ -1334,11 +2577,39 @@ function createTyping(){
 
   `;
 
-  chatInner.appendChild(message);
+  chatInner.appendChild(
+    message
+  );
 
   scrollChat();
 
   return message;
+
+}
+
+
+/* =================================
+   AUTH HEADERS
+================================= */
+
+function getAuthHeaders(){
+
+  const headers = {
+    "Content-Type":
+      "application/json"
+  };
+
+  const token =
+    getToken();
+
+  if(token){
+
+    headers.Authorization =
+      "Bearer " + token;
+
+  }
+
+  return headers;
 
 }
 
@@ -1349,7 +2620,8 @@ function createTyping(){
 
 async function sendMessage(){
 
-  if(currentController) return;
+  if(currentController)
+    return;
 
   const text =
     input.value.trim();
@@ -1357,18 +2629,23 @@ async function sendMessage(){
   if(
     !text &&
     !uploadedImage
-  ) return;
+  )
+    return;
 
   const welcome =
-    document.getElementById("welcome");
+    document.getElementById(
+      "welcome"
+    );
 
-  if(welcome) welcome.remove();
+  if(welcome)
+    welcome.remove();
 
   const image =
     uploadedImage;
 
   addMessage(
-    text || "Analyze this image.",
+    text ||
+    "Analyze this image.",
     "user",
     image,
     false,
@@ -1380,20 +2657,26 @@ async function sendMessage(){
     role:"user",
 
     content:
-      text || "Analyze this image.",
+      text ||
+      "Analyze this image.",
 
-    image:image || null
+    image:
+      image || null
 
   });
 
   saveMessages();
 
   addHistory(
-    text || "Image analysis"
+    text ||
+    "Image analysis"
   );
 
-  input.value = "";
-  input.style.height = "auto";
+  input.value =
+    "";
+
+  input.style.height =
+    "auto";
 
   removeImage();
 
@@ -1411,22 +2694,22 @@ async function sendMessage(){
       await fetch(
         "/api/chat",
         {
+
           method:"POST",
 
-          headers:{
-            "Content-Type":
-              "application/json"
-          },
+          headers:
+            getAuthHeaders(),
 
-          body:JSON.stringify({
+          body:
+            JSON.stringify({
 
-            message:
-              text,
+              message:
+                text,
 
-            history:
-              getModelHistory()
+              history:
+                getModelHistory()
 
-          }),
+            }),
 
           signal:
             currentController.signal
@@ -1499,7 +2782,8 @@ async function sendMessage(){
 
   }finally{
 
-    currentController = null;
+    currentController =
+      null;
 
     resetSendButton();
 
@@ -1522,7 +2806,8 @@ function getModelHistory(){
           msg.role === "user" ||
           msg.role === "assistant"
         ) &&
-        typeof msg.content === "string"
+        typeof msg.content ===
+        "string"
     )
 
     .slice(-20)
@@ -1551,25 +2836,34 @@ function stopGeneration(){
 
   currentController.abort();
 
-  currentController = null;
+  currentController =
+    null;
 
   resetSendButton();
 
 }
 
+
 function setStopButton(){
 
-  sendBtn.classList.add("stop");
+  sendBtn.classList.add(
+    "stop"
+  );
 
-  sendBtn.textContent = "■";
+  sendBtn.textContent =
+    "■";
 
 }
 
+
 function resetSendButton(){
 
-  sendBtn.classList.remove("stop");
+  sendBtn.classList.remove(
+    "stop"
+  );
 
-  sendBtn.textContent = "↑";
+  sendBtn.textContent =
+    "↑";
 
 }
 
@@ -1606,13 +2900,17 @@ function addMessage(
 ){
 
   const message =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
 
   message.className =
     "message " + type;
 
   const bubble =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
 
   bubble.className =
     "bubble";
@@ -1632,18 +2930,25 @@ function addMessage(
   if(image){
 
     const img =
-      document.createElement("img");
+      document.createElement(
+        "img"
+      );
 
-    img.src = image;
+    img.src =
+      image;
 
     img.className =
       "generated-image";
 
-    bubble.appendChild(img);
+    bubble.appendChild(
+      img
+    );
 
   }
 
-  message.appendChild(bubble);
+  message.appendChild(
+    bubble
+  );
 
   if(
     type === "ai" &&
@@ -1651,7 +2956,9 @@ function addMessage(
   ){
 
     const actionBar =
-      document.createElement("div");
+      document.createElement(
+        "div"
+      );
 
     actionBar.className =
       "message-actions";
@@ -1660,7 +2967,9 @@ function addMessage(
     /* COPY */
 
     const copy =
-      document.createElement("button");
+      document.createElement(
+        "button"
+      );
 
     copy.className =
       "copy-msg";
@@ -1668,38 +2977,41 @@ function addMessage(
     copy.textContent =
       "Copy";
 
-    copy.onclick = async () => {
+    copy.onclick =
+      async () => {
 
-      try{
+        try{
 
-        await navigator.clipboard.writeText(
-          text
-        );
+          await navigator.clipboard.writeText(
+            text
+          );
 
-        copy.textContent =
-          "Copied ✓";
+          copy.textContent =
+            "Copied ✓";
 
-        setTimeout(
-          () =>
-            copy.textContent =
-              "Copy",
-          1500
-        );
+          setTimeout(
+            () =>
+              copy.textContent =
+                "Copy",
+            1500
+          );
 
-      }catch{
+        }catch{
 
-        copy.textContent =
-          "Copy failed";
+          copy.textContent =
+            "Copy failed";
 
-      }
+        }
 
-    };
+      };
 
 
     /* REGENERATE */
 
     const regenerate =
-      document.createElement("button");
+      document.createElement(
+        "button"
+      );
 
     regenerate.className =
       "regenerate-msg";
@@ -1708,15 +3020,18 @@ function addMessage(
       "↻ Regenerate";
 
     regenerate.onclick =
-      () => regenerateResponse(
-        regenerate
-      );
+      () =>
+        regenerateResponse(
+          regenerate
+        );
 
 
     /* VOICE */
 
     const voice =
-      document.createElement("button");
+      document.createElement(
+        "button"
+      );
 
     voice.className =
       "voice-msg";
@@ -1724,22 +3039,35 @@ function addMessage(
     voice.textContent =
       "🔊 Voice";
 
-    voice.onclick = () => {
+    voice.onclick =
+      () => {
 
-      speakText(text);
+        speakText(text);
 
-    };
+      };
 
 
-    actionBar.appendChild(copy);
-    actionBar.appendChild(regenerate);
-    actionBar.appendChild(voice);
+    actionBar.appendChild(
+      copy
+    );
 
-    bubble.appendChild(actionBar);
+    actionBar.appendChild(
+      regenerate
+    );
+
+    actionBar.appendChild(
+      voice
+    );
+
+    bubble.appendChild(
+      actionBar
+    );
 
   }
 
-  chatInner.appendChild(message);
+  chatInner.appendChild(
+    message
+  );
 
   if(scroll)
     scrollChat();
@@ -1753,7 +3081,9 @@ function addMessage(
    REGENERATE
 ================================= */
 
-async function regenerateResponse(button){
+async function regenerateResponse(
+  button
+){
 
   if(currentController)
     return;
@@ -1788,22 +3118,22 @@ async function regenerateResponse(button){
       await fetch(
         "/api/chat",
         {
+
           method:"POST",
 
-          headers:{
-            "Content-Type":
-              "application/json"
-          },
+          headers:
+            getAuthHeaders(),
 
-          body:JSON.stringify({
+          body:
+            JSON.stringify({
 
-            message:
-              last.content,
+              message:
+                last.content,
 
-            history:
-              getModelHistory()
+              history:
+                getModelHistory()
 
-          }),
+            }),
 
           signal:
             currentController.signal
@@ -1879,23 +3209,34 @@ async function regenerateResponse(button){
 
 function speakText(text){
 
-  if(!("speechSynthesis" in window))
+  if(
+    !("speechSynthesis" in window)
+  )
     return;
 
   speechSynthesis.cancel();
 
   const clean =
     text
-      .replace(/```[\s\S]*?```/g,"")
-      .replace(/[*#_`]/g,"");
+      .replace(
+        /```[\s\S]*?```/g,
+        ""
+      )
+      .replace(
+        /[\*#\_`]/g,
+        ""
+      );
 
   const speech =
     new SpeechSynthesisUtterance(
       clean
     );
 
-  speech.rate = 1;
-  speech.pitch = 1;
+  speech.rate =
+    1;
+
+  speech.pitch =
+    1;
 
   speechSynthesis.speak(
     speech
@@ -1911,11 +3252,21 @@ function speakText(text){
 function escapeHTML(text){
 
   return text
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;");
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+    .replace(
+      /</g,
+      "&lt;"
+    )
+    .replace(
+      />/g,
+      "&gt;"
+    );
 
 }
+
 
 function inlineMarkdown(text){
 
@@ -1944,6 +3295,7 @@ function inlineMarkdown(text){
 
 }
 
+
 function renderMarkdown(text){
 
   const lines =
@@ -1951,13 +3303,18 @@ function renderMarkdown(text){
 
   let html = "";
 
-  let code = false;
+  let code =
+    false;
 
-  let language = "";
+  let language =
+    "";
 
-  let codeText = "";
+  let codeText =
+    "";
 
-  let list = null;
+  let list =
+    null;
+
 
   function closeList(){
 
@@ -1968,15 +3325,17 @@ function renderMarkdown(text){
         ? "</ol>"
         : "</ul>";
 
-      list = null;
+      list =
+        null;
 
     }
 
   }
 
+
   for(
-    let i=0;
-    i<lines.length;
+    let i = 0;
+    i < lines.length;
     i++
   ){
 
@@ -1995,19 +3354,26 @@ function renderMarkdown(text){
 
         closeList();
 
-        code = true;
+        code =
+          true;
 
         language =
-          line.trim()
-            .replace("```","")
+          line
+            .trim()
+            .replace(
+              "```",
+              ""
+            )
             .trim() ||
           "code";
 
-        codeText = "";
+        codeText =
+          "";
 
       }else{
 
-        code = false;
+        code =
+          false;
 
         html += `
 
@@ -2042,6 +3408,7 @@ function renderMarkdown(text){
 
     }
 
+
     if(code){
 
       codeText +=
@@ -2054,7 +3421,9 @@ function renderMarkdown(text){
 
     /* HEADINGS */
 
-    if(line.startsWith("### ")){
+    if(
+      line.startsWith("### ")
+    ){
 
       closeList();
 
@@ -2067,7 +3436,9 @@ function renderMarkdown(text){
 
     }
 
-    if(line.startsWith("## ")){
+    if(
+      line.startsWith("## ")
+    ){
 
       closeList();
 
@@ -2080,7 +3451,9 @@ function renderMarkdown(text){
 
     }
 
-    if(line.startsWith("# ")){
+    if(
+      line.startsWith("# ")
+    ){
 
       closeList();
 
@@ -2096,15 +3469,19 @@ function renderMarkdown(text){
 
     /* BULLETS */
 
-    if(/^[-*]\s/.test(line)){
+    if(
+      /^[-*]\s/.test(line)
+    ){
 
       if(list !== "ul"){
 
         closeList();
 
-        html += "<ul>";
+        html +=
+          "<ul>";
 
-        list = "ul";
+        list =
+          "ul";
 
       }
 
@@ -2123,15 +3500,19 @@ function renderMarkdown(text){
 
     /* NUMBERED */
 
-    if(/^\d+\.\s/.test(line)){
+    if(
+      /^\d+\.\s/.test(line)
+    ){
 
       if(list !== "ol"){
 
         closeList();
 
-        html += "<ol>";
+        html +=
+          "<ol>";
 
-        list = "ol";
+        list =
+          "ol";
 
       }
 
@@ -2147,17 +3528,13 @@ function renderMarkdown(text){
 
     }
 
-
     closeList();
 
 
     /* EMPTY */
 
-    if(!line.trim()){
-
+    if(!line.trim())
       continue;
-
-    }
 
 
     /* PARAGRAPH */
@@ -2221,6 +3598,7 @@ async function copyCode(button){
 imageBtn.onclick =
   generateImage;
 
+
 async function generateImage(){
 
   let prompt =
@@ -2238,8 +3616,13 @@ async function generateImage(){
   if(!prompt)
     return;
 
+  prompt =
+    prompt.trim();
+
   const welcome =
-    document.getElementById("welcome");
+    document.getElementById(
+      "welcome"
+    );
 
   if(welcome)
     welcome.remove();
@@ -2251,10 +3634,15 @@ async function generateImage(){
   );
 
   addHistory(
-    "Generate: " + prompt
+    "Generate: " +
+    prompt
   );
 
-  input.value = "";
+  input.value =
+    "";
+
+  input.style.height =
+    "auto";
 
   const loading =
     createTyping();
@@ -2265,16 +3653,17 @@ async function generateImage(){
       await fetch(
         "/api/image",
         {
+
           method:"POST",
 
-          headers:{
-            "Content-Type":
-              "application/json"
-          },
+          headers:
+            getAuthHeaders(),
 
-          body:JSON.stringify({
-            prompt
-          })
+          body:
+            JSON.stringify({
+              prompt
+            })
+
         }
       );
 
@@ -2355,13 +3744,23 @@ newChatBtn.onclick =
 clearBtn.onclick =
   clearHistory;
 
-menuBtn.onclick = () => {
+menuBtn.onclick =
+  () => {
 
-  document
-    .getElementById("sidebar")
-    .classList.toggle("open");
+    document
+      .getElementById("sidebar")
+      .classList.toggle(
+        "open"
+      );
 
-};
+  };
+
+
+/* =================================
+   START
+================================= */
+
+checkExistingLogin();
 
 </script>
 
